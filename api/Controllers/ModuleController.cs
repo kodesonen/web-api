@@ -9,13 +9,23 @@ using api.Models;
 
 namespace api.Controllers
 {
+    public interface IModuleController
+    {
+        Task<ActionResult<IEnumerable<Module>>> Getmodules();
+        Task<ActionResult<Module>> GetModule(int id);
+        Task<IActionResult> PutModule(int id, Module @module);
+        Task<ActionResult<Module>> PostModule(Module @module);
+        Task<IActionResult> DeleteModule(int id);
+    }
+
+
     [Route("api/[controller]")]
     [ApiController]
-    public class ModuleController : ControllerBase
+    public class ModuleController : ControllerBase, IModuleController
     {
-        private readonly ModuleContext _context;
+        private readonly DataContext _context;
 
-        public ModuleController(ModuleContext context)
+        public ModuleController(DataContext context)
         {
             _context = context;
         }
@@ -81,7 +91,7 @@ namespace api.Controllers
             await _context.SaveChangesAsync();
 
             //return CreatedAtAction("GetModule", new { id = @module.Id }, @module);
-            return CreatedAtAction(nameof(GetModule), new { id=module.Id }, module);
+            return CreatedAtAction(nameof(GetModule), new { id = module.Id }, module);
         }
 
         // DELETE: api/Module/5

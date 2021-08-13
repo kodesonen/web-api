@@ -9,13 +9,23 @@ using api.Models;
 
 namespace api.Controllers
 {
+    public interface IChallengeController
+    {
+        Task<ActionResult<IEnumerable<Challenge>>> Getchallenges();
+        Task<ActionResult<Challenge>> GetChallenge(int id);
+        Task<IActionResult> PutChallenge(int id, Challenge challenge);
+        Task<ActionResult<Challenge>> PostChallenge(Challenge challenge);
+        Task<IActionResult> DeleteChallenge(int id);
+    }
+
+
     [Route("api/[controller]")]
     [ApiController]
     public class ChallengeController : ControllerBase
     {
-        private readonly ChallengeContext _context;
+        private readonly DataContext _context;
 
-        public ChallengeController(ChallengeContext context)
+        public ChallengeController(DataContext context)
         {
             _context = context;
         }

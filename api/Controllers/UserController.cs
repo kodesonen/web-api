@@ -2,20 +2,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using api.Models.Settings;
 using api.Models;
 
 namespace api.Controllers
 {
+    public interface IUserController
+    {
+        Task<ActionResult<IEnumerable<User>>> Getusers();
+        List<User> GetPublicUsers(); // TODO: ADD THIS
+        Task<ActionResult<User>> GetUser(string id);
+        User GetUserByUrlName(string name); // TODO: ADD THIS
+        Task<IdentityResult> ChangePassword(EditPasswordModel model); // TODO: ADD THIS
+
+        // Do we need these? 
+        Task<IActionResult> PutUser(string id, User user);
+        Task<ActionResult<User>> PostUser(User user);
+        Task<IActionResult> DeleteUser(string id);
+
+    }
+
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserContext _context;
+        private readonly DataContext _context;
 
-        public UserController(UserContext context)
+        public UserController(DataContext context)
         {
             _context = context;
         }

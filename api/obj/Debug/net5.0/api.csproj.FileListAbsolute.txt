@@ -136,3 +136,13 @@
 /home/magnus/github/api/api/obj/Debug/net5.0/ref/api.dll
 /home/magnus/github/api/api/obj/Debug/net5.0/api.pdb
 /home/magnus/github/api/api/obj/Debug/net5.0/api.genruntimeconfig.cache
+/home/magnus/github/api/api/bin/Debug/net5.0/Microsoft.AspNetCore.Mvc.Testing.dll
+/home/magnus/github/api/api/bin/Debug/net5.0/Microsoft.AspNetCore.TestHost.dll
+/home/magnus/github/api/api/bin/Debug/net5.0/Microsoft.Extensions.DependencyModel.dll
+/home/magnus/github/api/api/bin/Debug/net5.0/System.IO.Pipelines.dll
+/home/magnus/github/api/api/bin/Debug/net5.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/magnus/github/api/api/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.Internal.dll
+/home/magnus/github/api/api/bin/Debug/net5.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+/home/magnus/github/api/api/bin/Debug/net5.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/home/magnus/github/api/api/bin/Debug/net5.0/Microsoft.Extensions.Identity.Core.dll
+/home/magnus/github/api/api/bin/Debug/net5.0/Microsoft.Extensions.Identity.Stores.dll

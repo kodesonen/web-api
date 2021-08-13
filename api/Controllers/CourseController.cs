@@ -2,20 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using api.Models;
 
 namespace api.Controllers
 {
+
+    public interface ICourseController
+    {
+        Task<ActionResult<IEnumerable<Course>>> Getcourses();
+        Task<ActionResult<Course>> GetCourse(int id);
+        Task<IActionResult> PutCourse(int id, Course course);
+        Task<ActionResult<Course>> PostCourse(Course course);
+        Task<IActionResult> DeleteCourse(int id);   
+    }
+
     [Route("api/[controller]")]
     [ApiController]
-    public class CourseController : ControllerBase
+    public class CourseController : ControllerBase, ICourseController
     {
-        private readonly CourseContext _context;
+        private readonly DataContext _context;
 
-        public CourseController(CourseContext context)
+        public CourseController(DataContext context)
         {
             _context = context;
         }
