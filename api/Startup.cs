@@ -8,22 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using api.Models;
 
-
-/**
-Spørsmål til kodelesing:
-
-1. Skal jeg følge samme URL konvensjon som https://api.kodesonen.no,  URL: api.kodesonen.no/?key={api-key}&task={request}?
-    og vil dette si at alle endepunktene krever en api-key i HTTP-requestene til API'et?
-2. Holder det med bruken av [Authorize] og [AllowAnonymous] for å bestemme om endepunktet krever at brukeren er logget inn eller ikke?
-3. Hvis en bruker logger inn så får den en cookie som gjør at den har tilgang til endepunkter som er markert med [Authorize].
-    Kan brukeren bruke denne cookien til å få tilgang til ANDRE brukere sin data. Evt er ikke dette noe å bry seg om siden passordet
-    ikke lagres i databasen?
-4. Skal det være noe slags roller i systemet? Som feks. at det er noen endepunkter som kun er gyldige for Admin og ikke vanlige
-    innloggede brukere? 
-*/
-
-
-
 namespace api
 {
     public class Startup
