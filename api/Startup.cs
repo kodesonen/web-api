@@ -20,7 +20,6 @@ Spørsmål til kodelesing:
     ikke lagres i databasen?
 4. Skal det være noe slags roller i systemet? Som feks. at det er noen endepunkter som kun er gyldige for Admin og ikke vanlige
     innloggede brukere? 
-
 */
 
 
@@ -40,11 +39,11 @@ namespace api
         public void ConfigureServices(IServiceCollection services)
         {
 
-            
+
 
             // Temporary connection, change to kodesonens later.
             var connectionString = "server=localhost;user=root;password=root;database=api_test";
-            
+
             var serverVersion = new MySqlServerVersion(ServerVersion.AutoDetect(connectionString));
 
             services.AddControllers();
@@ -67,12 +66,12 @@ namespace api
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
 
-				options.User.RequireUniqueEmail = true;
+                options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedEmail = false;
 
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-				options.Lockout.MaxFailedAccessAttempts = 5;
-				options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
             });
 
             /*
