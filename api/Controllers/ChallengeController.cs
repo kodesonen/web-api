@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using api.Models;
 
@@ -20,6 +21,7 @@ namespace api.Controllers
 
 
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin, Contributor")]
     [ApiController]
     public class ChallengeController : ControllerBase
     {
@@ -32,6 +34,7 @@ namespace api.Controllers
 
         // GET: api/Challenge
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Challenge>>> Getchallenges()
         {
             return await _context.challenges.ToListAsync();
@@ -39,6 +42,7 @@ namespace api.Controllers
 
         // GET: api/Challenge/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<Challenge>> GetChallenge(int id)
         {
             var challenge = await _context.challenges.FindAsync(id);

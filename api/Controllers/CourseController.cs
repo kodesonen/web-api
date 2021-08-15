@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using api.Models;
 
 namespace api.Controllers
@@ -15,10 +16,11 @@ namespace api.Controllers
         Task<ActionResult<Course>> GetCourse(int id);
         Task<IActionResult> PutCourse(int id, Course course);
         Task<ActionResult<Course>> PostCourse(Course course);
-        Task<IActionResult> DeleteCourse(int id);   
+        Task<IActionResult> DeleteCourse(int id);
     }
 
     [Route("api/[controller]")]
+    [Authorize(Roles = "Admin, Contributor")]
     [ApiController]
     public class CourseController : ControllerBase, ICourseController
     {
@@ -31,6 +33,7 @@ namespace api.Controllers
 
         // GET: api/Course
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Course>>> Getcourses()
         {
             return await _context.courses.ToListAsync();
@@ -38,6 +41,8 @@ namespace api.Controllers
 
         // GET: api/Course/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
+
         public async Task<ActionResult<Course>> GetCourse(int id)
         {
             var course = await _context.courses.FindAsync(id);

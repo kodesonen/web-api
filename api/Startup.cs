@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,9 +23,6 @@ namespace api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-
-
             // Temporary connection, change to kodesonens later.
             var connectionString = "server=localhost;user=root;password=root;database=api_test";
 
@@ -67,7 +65,7 @@ namespace api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -75,6 +73,8 @@ namespace api
                 // app.UseSwagger();
                 // app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api v1"));
             }
+
+            CreateRoles(serviceProvider).Wait();
 
             app.UseHttpsRedirection();
 
@@ -87,6 +87,52 @@ namespace api
             {
                 endpoints.MapControllers();
             });
+        }
+
+        // Method for setting up the roles, copied from this answer: https://stackoverflow.com/a/42472760
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            //initializing custom roles 
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<User>>();
+            string[] roleNames = { "Admin", "Contributor", "User" };
+            IdentityResult roleResult;
+
+            foreach (var roleName in roleNames)
+            {
+                var roleExist = await RoleManager.RoleExistsAsync(roleName);
+                if (!roleExist)
+                {
+                    //create the roles and seed them to the database: Question 1
+                    roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+
+            //Here you could create a super user who will maintain the web app
+            var powerUser = new User()
+            {
+                Email = Configuration["PowerUser:Email"],
+                UserName = Configuration["PowerUser:Email"],
+                FullName = Configuration["PowerUser:FullName"],
+                University = Configuration["PowerUser:University"],
+                Study = Configuration["PowerUser:Study"],
+                Degree = Configuration["PowerUser:Degree"]
+            };
+
+
+            //Ensure you have these values in your appsettings.json file
+            string userPWD = Configuration["PowerUser:Password"];
+            var _user = await UserManager.FindByEmailAsync(Configuration["PowerUser:Email"]);
+
+            if (_user == null)
+            {
+                var createPowerUser = await UserManager.CreateAsync(powerUser, userPWD);
+                if (createPowerUser.Succeeded)
+                {
+                    //here we tie the new user to the role
+                    await UserManager.AddToRoleAsync(powerUser, "Admin");
+                }
+            }
         }
     }
 }
