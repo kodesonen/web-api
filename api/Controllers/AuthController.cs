@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using api.Models;
 using api.Models.Auth;
@@ -40,6 +40,11 @@ namespace api.Controllers
             };
 
             var result = await userManager.CreateAsync(user, registerModel.Password);
+            if (result.Succeeded)
+            {
+                //here we tie the new user to the role
+                await userManager.AddToRoleAsync(user, "User");
+            }
             return result;
         }
 
@@ -50,6 +55,8 @@ namespace api.Controllers
             return result;
         }
 
+        [HttpGet("[action]")]
+        [Authorize(Roles = "User")]
         public async Task SignOut()
         {
             await signInManager.SignOutAsync();

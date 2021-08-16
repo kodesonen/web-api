@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using api.Models.Settings;
 using api.Models;
 
@@ -17,11 +18,8 @@ namespace api.Controllers
         List<User> GetPublicUsers();
         Task<ActionResult<User>> GetUser(string id);
         User GetUserByUrlName(string name);
-        Task<IdentityResult> ChangePassword(EditPasswordModel model); // TODO: ADD THIS
-
-        // We need roles to control who can use these 
+        Task<IdentityResult> ChangePassword(EditPasswordModel model);
         Task<IActionResult> PutUser(string id, User user);
-        Task<ActionResult<User>> PostUser(User user);
         Task<IActionResult> DeleteUser(string id);
 
     }
@@ -29,6 +27,8 @@ namespace api.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles="Admin, Contributor")]
+
     public class UserController : ControllerBase
     {
         private readonly DataContext _context;
@@ -115,6 +115,8 @@ namespace api.Controllers
 
         // POST: api/User/ChangePassword
         [HttpPost("[action]")]
+        [Authorize(Roles="Admin, Contributor, User")]
+
         public async Task<IdentityResult> ChangePassword(EditPasswordModel model)
         {
             User user = await _userManager.GetUserAsync(_httpContext.HttpContext.User);
@@ -122,6 +124,8 @@ namespace api.Controllers
             return result;
         }
 
+
+        /*
         // POST: api/User
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -146,9 +150,12 @@ namespace api.Controllers
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
+        */
 
         // DELETE: api/User/5
         [HttpDelete("{id}")]
+        [Authorize(Roles="Admin, Contributor, User")]
+
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await _context.users.FindAsync(id);
