@@ -1,0 +1,31 @@
+# CI - Build and test dotnet project
+name: build_project
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: cd api && dotnet build --no-restore
+      run: cd ../api.Tests && dotnet build --no-restore
+
+    - name: Test
+      run: cd api.Tests && dotnet test --no-build --verbosity normal
