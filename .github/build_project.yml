@@ -3,9 +3,9 @@ name: build_project
 
 on:
   push:
-    branches: [ production ]
+    branches: [ production, development ]
   pull_request:
-    branches: [ production ]
+    branches: [ production, development ]
 
 jobs:
   build:
