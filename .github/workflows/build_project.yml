@@ -20,12 +20,14 @@ jobs:
           dotnet-version: 5.0.x
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: |
+          dotnet restore api
+          dotnet restore api.Tests
 
       - name: Build
         run: |
-          cd api && dotnet build --no-restore
-          cd ../api.Tests && dotnet build --no-restore
+          dotnet build --no-restore api
+          dotnet build --no-restore api.Tests
 
       - name: Test
         run: cd api.Tests && dotnet test --no-build --verbosity normal
