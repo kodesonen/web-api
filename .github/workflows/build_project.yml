@@ -3,29 +3,29 @@ name: build_project
 
 on:
   push:
-    branches: [ production, development ]
+    branches: [production, development]
   pull_request:
-    branches: [ production, development ]
+    branches: [production, development]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Build
-      run: cd api && dotnet build --no-restore
-      run: cd ../api.Tests && dotnet build --no-restore
+      - name: Build
+        run: |
+          cd api && dotnet build --no-restore
+          cd ../api.Tests && dotnet build --no-restore
 
-    - name: Test
-      run: cd api.Tests && dotnet test --no-build --verbosity normal
+      - name: Test
+        run: cd api.Tests && dotnet test --no-build --verbosity normal
