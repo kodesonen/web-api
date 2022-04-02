@@ -6,10 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Swashbuckle.AspNetCore.SwaggerUI;
-using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using api.Models;
 
@@ -60,14 +56,12 @@ namespace api
                 options.Lockout.AllowedForNewUsers = true;
             });
 
-            // API documentation with Swagger
-
+            /*
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Kodesonen Web API", Version = "v1" });
-                //c.RoutePrefix = string.Empty;
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "api", Version = "v1" });
             });
-            
+            */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,8 +70,8 @@ namespace api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api v1"));
+                // app.UseSwagger();
+                // app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api v1"));
             }
 
             CreateRoles(serviceProvider).Wait();
