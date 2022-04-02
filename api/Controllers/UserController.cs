@@ -28,7 +28,6 @@ namespace api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles="Admin, Contributor")]
-
     public class UserController : ControllerBase
     {
         private readonly DataContext _context;
